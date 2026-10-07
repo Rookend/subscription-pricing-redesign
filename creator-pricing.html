@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Creator pricing — simple, transparent plans</title>
+<meta name="description" content="A simple creator plan with powerful publishing, community, growth, and podcast tools." />
+<style>
+  :root {
+    --background: oklch(0.958 0.028 96);
+    --foreground: oklch(0.09 0 0);
+    --card: #fff;
+    --muted-foreground: #555;
+    --primary: #000;
+    --primary-foreground: #fff;
+    --ring: #7aa7e8;
+    --destructive: #d33;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--background); color: var(--foreground); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  button, input { font: inherit; }
+  .pricing-page { min-height: 100vh; background: linear-gradient(to bottom, oklch(0.928 0.034 96) 0 100px, var(--background) 100px); }
+  .pricing-panel { position: relative; width: min(473px, 100%); min-height: 1209px; margin: 0 auto; padding: 37px 32px 8px; border-radius: 27px 27px 0 0; background: var(--card); }
+  .pricing-header { position: relative; }
+  .pricing-header h1 { margin: 0; color: var(--muted-foreground); font-size: 31px; line-height: 1.15; font-weight: 500; }
+  .pricing-header > p { margin: 6px 0 0; color: var(--muted-foreground); font-size: 16px; line-height: 20px; }
+  .pricing-header > p strong { color: var(--foreground); font-weight: 650; }
+  .brand-mark { position: absolute; top: -15px; left: 190px; width: 31px; height: 38px; transform: rotate(13deg); }
+  .brand-mark i { position: absolute; display: block; background: var(--primary); }
+  .brand-mark i:first-child { top: 0; left: 0; width: 29px; height: 27px; border-radius: 50% 50% 44% 46%; }
+  .brand-mark i:last-child { bottom: 0; left: 2px; width: 13px; height: 26px; border-radius: 8px; }
+  .rate-row { display: grid; grid-template-columns: 183px 1fr; align-items: start; margin-top: 16px; }
+  .rate { font-size: 76px; line-height: .9; font-weight: 300; letter-spacing: -3px; }
+  .rate s { display: block; margin-bottom: 6px; font-size: 24px; line-height: 1; font-weight: 400; letter-spacing: 0; color: oklch(0.72 0 0); text-decoration-thickness: 2px; }
+  .rate-copy { padding-top: 4px; }
+  .rate-copy strong { display: block; font-size: 16px; line-height: 17px; }
+  .rate-copy small { display: block; max-width: 205px; margin-top: 3px; color: oklch(0.73 0 0); font-size: 7px; line-height: 8px; text-decoration: underline; }
+  .trial-note { margin: 18px 0 0; padding: 12px 14px; border-radius: 14px; background: oklch(0.945 0.05 100); font-size: 13px; line-height: 19px; }
+  .trial-note strong { font-weight: 700; }
+  .feature-list { margin-top: 31px; }
+  .feature-group { margin: 0 0 21px; }
+  .feature-group h2 { margin: 0 0 17px; font-size: 16px; line-height: 19px; font-weight: 700; }
+  .feature-group ul { display: grid; gap: 21px; margin: 0; padding: 0; list-style: none; }
+  .feature-group li { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; line-height: 24px; font-weight: 500; }
+  .check { flex: 0 0 14px; color: oklch(0.7 0.12 150); font-size: 21px; line-height: 21px; font-weight: 400; }
+  .button { min-height: 44px; border: 0; border-radius: 999px; cursor: pointer; transition: opacity 140ms ease, transform 140ms ease; }
+  .button:focus-visible, input:focus-visible { outline: 3px solid var(--ring); outline-offset: 3px; }
+  .button:hover { opacity: .82; }
+  .button:active { transform: scale(.99); }
+  .button-primary { background: var(--primary); color: var(--primary-foreground); }
+  .button-icon { display: grid; place-items: center; min-width: 44px; padding: 0; background: transparent; color: var(--foreground); font-size: 28px; }
+  .get-started { position: absolute; right: 32px; bottom: 8px; left: 32px; width: calc(100% - 64px); font-size: 14px; }
+  .dialog-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgb(0 0 0 / 55%); }
+  .dialog { position: relative; width: min(410px, 100%); padding: 34px; border-radius: 18px; background: var(--card); box-shadow: 0 24px 80px rgb(0 0 0 / 28%); }
+  .dialog-close { position: absolute; top: 8px; right: 8px; }
+  .dialog h2 { margin: 0; font-size: 29px; }
+  .dialog p { margin: 8px 0 25px; color: var(--muted-foreground); }
+  .dialog label { display: block; margin-bottom: 7px; font-size: 14px; font-weight: 700; }
+  .dialog input { width: 100%; height: 48px; padding: 0 13px; border: 1px solid #ddd; border-radius: 6px; background: var(--card); color: var(--foreground); }
+  .dialog form > .button { width: 100%; margin-top: 18px; }
+  .form-error { margin: 10px 0 0; color: var(--destructive); font-size: 14px; }
+  .success { text-align: center; }
+  .success-check { display: grid; place-items: center; width: 48px; height: 48px; margin: 0 auto 16px; border-radius: 50%; background: var(--background); font-size: 26px; }
+  .success .button { width: 100%; margin-top: 8px; }
+  @keyframes dialog-in { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .dialog { animation: dialog-in 180ms ease-out; }
+  @media (max-width: 520px) {
+    .pricing-page { background: var(--card); }
+    .pricing-panel { min-height: 1209px; padding-inline: 24px; border-radius: 0; }
+    .get-started { right: 24px; left: 24px; width: calc(100% - 48px); }
+    .rate-row { grid-template-columns: 48% 52%; }
+    .brand-mark { left: 48%; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+</head>
+<body>
+<main class="pricing-page">
+  <article class="pricing-panel" aria-labelledby="pricing-title">
+    <header class="pricing-header">
+      <div class="brand-mark" aria-hidden="true"><i></i><i></i></div>
+      <h1 id="pricing-title">Creator pricing</h1>
+      <p>Creator is free to start. You only pay when you start <strong>earning.</strong></p>
+      <div class="rate-row">
+        <span class="rate"><s aria-label="Previously 10 percent">10%</s>5%</span>
+        <div class="rate-copy">
+          <strong>of the income you earn on<br />Creator</strong>
+          <small>Plus payment processing, currency conversion, and payout fees, and applicable taxes.</small>
+        </div>
+      </div>
+      <p class="trial-note">
+        <strong>Give it a month on us — just $0.99.</strong> After that it's 5% of what you
+        earn, billed monthly. If you don't earn, you don't pay.
+      </p>
+    </header>
+
+    <div class="feature-list" id="features"></div>
+
+    <button class="button button-primary get-started" id="open-dialog">Get started</button>
+  </article>
+
+  <div class="dialog-backdrop" id="backdrop" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" id="dialog">
+      <button class="button button-icon dialog-close" aria-label="Close" id="close-dialog">&times;</button>
+      <div class="success" id="success-view" hidden>
+        <span class="success-check" aria-hidden="true">&#10003;</span>
+        <h2 id="success-title">You're on the list</h2>
+        <p>We'll send your invitation soon.</p>
+        <button class="button button-primary" id="done">Done</button>
+      </div>
+      <form id="signup-form" novalidate="false">
+        <h2 id="dialog-title">Start creating</h2>
+        <p>Enter your email to join Creator.</p>
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" maxlength="254" required autocomplete="email" placeholder="you@example.com" />
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+        <button class="button button-primary" type="submit" id="submit">Continue</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script>
+  var sections = [
+    { title: "Earn from your work", items: ["Monthly and annual subscriptions", "Membership tiers", "One-time payments"] },
+    { title: "Create your own space", items: ["Audio, images and rich text editing", "Native video and livestreaming", "Email newsletters"] },
+    { title: "Build a thriving community.", items: ["Chats, DMs and comments", "Exportable email lists"] },
+    { title: "Grow your business", items: ["Automated growth tools", "Member analytics and insights", "Free trials, discounts and sales", "Creator-first discovery"] },
+    { title: "Manage your podcast", items: ["Podcast importing and syncing", "Support for multiple podcasts", "Spotify integration and Synced Feeds", "Distribute your episodes via RSS"] }
+  ];
+  var list = document.getElementById("features");
+  sections.forEach(function (section) {
+    var group = document.createElement("section");
+    group.className = "feature-group";
+    var h2 = document.createElement("h2");
+    h2.textContent = section.title;
+    group.appendChild(h2);
+    var ul = document.createElement("ul");
+    section.items.forEach(function (item) {
+      var li = document.createElement("li");
+      var check = document.createElement("span");
+      check.className = "check";
+      check.setAttribute("aria-hidden", "true");
+      check.textContent = "\u2713";
+      li.appendChild(check);
+      li.appendChild(document.createTextNode(item));
+      ul.appendChild(li);
+    });
+    group.appendChild(ul);
+    list.appendChild(group);
+  });
+
+  var backdrop = document.getElementById("backdrop");
+  var form = document.getElementById("signup-form");
+  var successView = document.getElementById("success-view");
+  var successTitle = document.getElementById("success-title");
+  var successCopy = successView.querySelector("p");
+  var errorBox = document.getElementById("form-error");
+  var input = document.getElementById("email");
+  var submitBtn = document.getElementById("submit");
+
+  function openDialog() {
+    form.reset();
+    form.hidden = false;
+    successView.hidden = true;
+    errorBox.hidden = true;
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Continue";
+    backdrop.hidden = false;
+    input.focus();
+  }
+  function closeDialog() { backdrop.hidden = true; }
+
+  document.getElementById("open-dialog").addEventListener("click", openDialog);
+  document.getElementById("close-dialog").addEventListener("click", closeDialog);
+  document.getElementById("done").addEventListener("click", closeDialog);
+  backdrop.addEventListener("mousedown", function (event) { if (event.target === backdrop) closeDialog(); });
+  document.addEventListener("keydown", function (event) { if (event.key === "Escape" && !backdrop.hidden) closeDialog(); });
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    errorBox.hidden = true;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    var email = input.value.trim().toLowerCase();
+    var seen = null;
+    try { seen = localStorage.getItem("joined-email"); } catch (e) {}
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Joining\u2026";
+    setTimeout(function () {
+      submitBtn.disabled = false;
+      if (seen === email) {
+        successTitle.textContent = "You're already on the list";
+        successCopy.textContent = "We have your email \u2014 we'll be in touch soon.";
+      } else {
+        successTitle.textContent = "You're on the list";
+        successCopy.textContent = "We'll send your invitation soon.";
+        try { localStorage.setItem("joined-email", email); } catch (e) {}
+      }
+      form.hidden = true;
+      successView.hidden = false;
+    }, 300);
+  });
+</script>
+</body>
+</html>
